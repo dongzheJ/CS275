@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <tabs>
+        <tab
+            id="@+id/tab_map"
+            icon="@drawable/map" />
+        <tab
+            id="@+id/tab_record"
+            icon="@drawable/record" />
+        <tab
+            id="@+id/tab_user"
+            icon="@drawable/user" />
+    </tabs>
+</PreferenceScreen>
