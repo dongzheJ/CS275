@@ -4,6 +4,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -39,7 +40,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     private LatLng libraryLoc = new LatLng(44.477239, -73.196687);
     private Location library = new Location("Library");
     private Location curr = new Location("curr");
+    // distance to store distance between home and current location in meters
     private double distance = 0.0;
+    private boolean userInTravel = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +54,12 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         mapFragment.getMapAsync(this);
 
         // bottom bar
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 if (tabId == R.id.tab1) {
-
                 }
             }
         });
@@ -65,7 +68,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         library.setLatitude(44.477239);
         library.setLongitude(-73.196687);
 
-        //
+        // get user current location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -81,6 +84,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
                             distance = library.distanceTo(curr);
                             String str = String.format("%.02f", distance);
                             tv.append(str + " meters away from Library");
+                            // determine whether user in travel
+                            if (distance >= 500 && !userInTravel){
+                                tv.append("\nUser in travel");
+                                userInTravel = true;
+                            }
 //                            tv.append("\nCurrent local: " + String.format(Locale.US, "%s : %s", lat, lon));
                         }
                     }
