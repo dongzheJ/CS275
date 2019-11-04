@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <tabs>
-        <tab
-            id="@+id/tab_map"
-            icon="@drawable/map" />
-        <tab
-            id="@+id/tab_record"
-            icon="@drawable/record" />
-        <tab
-            id="@+id/tab_user"
-            icon="@drawable/user" />
-    </tabs>
-</PreferenceScreen>
+<tabs xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:andorid="http://schemas.android.com/apk/res-auto">
+    <tab
+        android:id="@+id/tab1"
+        andorid:icon="@drawable/map" />
+    <tab
+        android:id="@+id/tab2"
+        android:icon="@drawable/record" />
+    <tab
+        android:id="@+id/tab3"
+        android:icon="@drawable/user" />
+</tabs>

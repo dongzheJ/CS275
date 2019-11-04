@@ -9,22 +9,37 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
+import java.text.DecimalFormat;
+import java.util.Locale;
+
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener,OnMapReadyCallback {
+        GoogleMap.OnMyLocationClickListener,OnMapReadyCallback{
 
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     private GoogleMap mMap;
+    private FusedLocationProviderClient fusedLocationClient;
+    private TextView tv;
+    private double lat = 0.0, lon = 0.0;
+    private LatLng libraryLoc = new LatLng(44.477239, -73.196687);
+    private Location library = new Location("Library");
+    private Location curr = new Location("curr");
+    private double distance = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +51,42 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         mapFragment.getMapAsync(this);
 
         // bottom bar
-//        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-//        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-//            @Override
-//            public void onTabSelected(@IdRes int tabId) {
-//                if (tabId == R.id.xxx) {
-//                    // The tab with id R.id.tab_favorites was selected,
-//                    // change your content accordingly.
-//
-//                }
-//            }
-//        });
+        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                if (tabId == R.id.tab1) {
+
+                }
+            }
+        });
+
+        tv = findViewById(R.id.text);
+        library.setLatitude(44.477239);
+        library.setLongitude(-73.196687);
+
+        //
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                            lat = location.getLatitude();
+                            lon = location.getLongitude();
+                            curr.setLatitude(lat);
+                            curr.setLongitude(lon);
+                            distance = library.distanceTo(curr);
+                            String str = String.format("%.02f", distance);
+                            tv.append(str + " meters away from Library");
+//                            tv.append("\nCurrent local: " + String.format(Locale.US, "%s : %s", lat, lon));
+                        }
+                    }
+                });
+//        LatLng currLocal = new LatLng(lat, lon);
+//        double distance = CalculationByDistance(library, currLocal);
     }
 
 
@@ -78,6 +118,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
+
+        //
+        mMap.addMarker(new MarkerOptions().position(libraryLoc).title("Library"));
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -103,6 +147,31 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
+    }
+
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        return Radius * c;
     }
 
 }
