@@ -1,15 +1,20 @@
 package com.example.cs275.ui.home;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -25,7 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback {
+public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
 //    private HomeViewModel homeViewModel;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
@@ -39,6 +44,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     // distance to store distance between home and current location in meters
     private double distance = 0.0;
     private boolean userInTravel = false;
+
+    private Button mButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -82,12 +89,48 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                 tv.append("\nUser in travel");
                                 userInTravel = true;
                             }
+                            if (userInTravel && distance <= 100){
+                                tv.append("\nYou are back home");
+                                userInTravel = false;
+                            }
 //                            tv.append("\nCurrent local: " + String.format(Locale.US, "%s : %s", lat, lon));
                         }
                     }
                 });
 
+        // Button
+        mButton = root.findViewById(R.id.button_send);
+
         return root;
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId()) {
+            case R.id.button_send:
+                // Do something
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                builder.setTitle("Title");
+//                final EditText input = new EditText(getActivity());
+//                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//                builder.setView(input);
+//                // Set up the buttons
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        m_Text = input.getText().toString();
+//                    }
+//                });
+//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//                builder.show();
+        }
     }
 
     @Override
