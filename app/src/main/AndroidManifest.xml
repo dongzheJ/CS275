@@ -32,7 +32,7 @@
             android:value="AIzaSyC13A0wkZNCoI07uvXV6U_fiwmBo6KYryE" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
