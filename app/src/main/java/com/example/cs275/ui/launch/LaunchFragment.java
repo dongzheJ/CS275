@@ -1,4 +1,4 @@
-package com.example.cs275.ui.dashboard;
+package com.example.cs275.ui.launch;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.cs275.R;
 
-public class DashboardFragment extends Fragment {
+public class LaunchFragment extends Fragment {
 
-    private com.example.cs275.ui.dashboard.DashboardViewModel dashboardViewModel;
+    private com.example.cs275.ui.launch.LaunchViewModel launchViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(com.example.cs275.ui.dashboard.DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(this, new Observer<String>() {
+        launchViewModel =
+                ViewModelProviders.of(this).get(com.example.cs275.ui.launch.LaunchViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_launch, container, false);
+        final TextView textView = root.findViewById(R.id.text_launch);
+        launchViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
