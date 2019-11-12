@@ -14,14 +14,21 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Use "prefs" below to check shared preferences for launch information:
     SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
-//        prefs.edit().clear().apply();
 
+        //Use shared preferences to check if app has been launched previously:
+        prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
+
+        //Uncomment below line to get "LaunchFragment" tp display each launch, no matter if app has been launched previously
 //        prefs.edit().putBoolean("firstrun", true).commit();
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        //If app is launched for the first time:
         if (prefs.getBoolean("firstrun", true)) {
             prefs.edit().putBoolean("firstrun", false).commit();
             super.onCreate(savedInstanceState);
@@ -32,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
                         .add(android.R.id.content, launchFragment)
                         .commit();
             }
-        } else {
+
+        } else { // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            //If app has previously been launched:
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -45,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
             NavigationUI.setupWithNavController(navView, navController);
         }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     }
 
 }
