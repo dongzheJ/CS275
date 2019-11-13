@@ -21,25 +21,10 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
-    //==============================================================================================
-
-    void setupMainActivityNav() {
-        setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-    }
-
-    //==============================================================================================
-
     //Use "prefs" below to check shared preferences for launch information:
     SharedPreferences prefs = null;
+
+    //==============================================================================================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,18 +63,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //==============================================================================================
 
+    //Creates the nav bar
+    void setupMainActivityNav() {
+        setContentView(R.layout.activity_main);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    //==============================================================================================
+
+    //Switches from the initial launch fragment to the nav view tht displays 3 other fragments
     @Override
     public void changeFragment(int id) {
-//        setContentView(R.layout.activity_main);
-        Fragment frag = new HomeFragment();
+//        Fragment frag = new HomeFragment();
         setupMainActivityNav();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.nav_host_fragment, frag);
+//        ft.replace(R.id.nav_host_fragment, frag);
         ft.commit();
     }
 
     //==============================================================================================
 
+    //Overrides onNavigationItemsSelected method in NavigationView to assist in switching fragments upon button press
+    //Only used when switching from LaunchFragment to main navigation view
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         return false;
