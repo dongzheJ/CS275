@@ -2,17 +2,41 @@ package com.example.cs275;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import com.example.cs275.ui.home.HomeFragment;
 import com.example.cs275.ui.launch.LaunchFragment;
+import com.example.cs275.ui.launch.OnFragmentInteractionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
+
+    //==============================================================================================
+
+    void setupMainActivityNav() {
+        setContentView(R.layout.activity_main);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    //==============================================================================================
 
     //Use "prefs" below to check shared preferences for launch information:
     SharedPreferences prefs = null;
@@ -32,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         if (prefs.getBoolean("firstrun", true)) {
             prefs.edit().putBoolean("firstrun", false).commit();
             super.onCreate(savedInstanceState);
+//            setupMainActivityNav();
             setContentView(R.layout.fragment_launch);
             LaunchFragment launchFragment = new LaunchFragment();
             if (getSupportFragmentManager().findFragmentById(android.R.id.content)==null) {
@@ -44,19 +69,29 @@ public class MainActivity extends AppCompatActivity {
 
             //If app has previously been launched:
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            BottomNavigationView navView = findViewById(R.id.nav_view);
-            // Passing each menu ID as a set of Ids because each
-            // menu should be considered as top level destinations.
-            AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                    .build();
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-            NavigationUI.setupWithNavController(navView, navController);
+//            setContentView(R.layout.activity_main);
+            setupMainActivityNav();
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     }
 
+    //==============================================================================================
+
+    @Override
+    public void changeFragment(int id) {
+//        setContentView(R.layout.activity_main);
+        Fragment frag = new HomeFragment();
+        setupMainActivityNav();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.nav_host_fragment, frag);
+        ft.commit();
+    }
+
+    //==============================================================================================
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
+    }
 }
