@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.cs275.ui.home.HomeFragment;
+//import com.example.cs275.ui.home.HomeFragment;
 import com.example.cs275.ui.launch.LaunchFragment;
 import com.example.cs275.ui.launch.OnFragmentInteractionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -12,7 +12,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+//import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Uncomment below line to get "LaunchFragment" tp display each launch, no matter if app has been launched previously
 //        prefs.edit().putBoolean("firstrun", true).commit();
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //------------------------------------------------------------------------------------------
 
         //If app is launched for the first time:
-        if (prefs.getBoolean("firstrun", true)) {
+        if (isFirstLaunch()) {
             prefs.edit().putBoolean("firstrun", false).commit();
             super.onCreate(savedInstanceState);
 //            setupMainActivityNav();
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .commit();
             }
 
-        } else { // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        } else { //---------------------------------------------------------------------------------
 
             //If app has previously been launched:
             super.onCreate(savedInstanceState);
@@ -58,7 +58,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setupMainActivityNav();
         }
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //------------------------------------------------------------------------------------------
+    }
+
+    //==============================================================================================
+
+    boolean isFirstLaunch() {
+        if (prefs.getBoolean("firstrun", true)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //==============================================================================================
@@ -82,11 +92,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Switches from the initial launch fragment to the nav view tht displays 3 other fragments
     @Override
     public void changeFragment(int id) {
-//        Fragment frag = new HomeFragment();
-        setupMainActivityNav();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        ft.replace(R.id.nav_host_fragment, frag);
-        ft.commit();
+        if (id == 1) {
+//            Fragment frag = new HomeFragment();
+            setupMainActivityNav();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.nav_host_fragment, frag);
+            ft.commit();
+        }// else if (id == 2) {
+//            setContentView(R.layout.fragment_launch);
+//            LaunchFragment launchFragment = new LaunchFragment();
+//            if (getSupportFragmentManager().findFragmentById(android.R.id.content)==null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(android.R.id.content, launchFragment)
+//                        .commit();
+//            }
+//        }
     }
 
     //==============================================================================================

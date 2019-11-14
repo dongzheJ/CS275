@@ -33,7 +33,7 @@ public class LaunchFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.changeFragment(2);
+                mListener.changeFragment(1);
             }
         });
 
