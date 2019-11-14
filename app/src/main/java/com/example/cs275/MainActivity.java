@@ -19,6 +19,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+//==================================================================================================
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
     //Use "prefs" below to check shared preferences for launch information:
@@ -32,8 +34,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Use shared preferences to check if app has been launched previously:
         prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
 
-        //Uncomment below line to get "LaunchFragment" tp display each launch, no matter if app has been launched previously
-//        prefs.edit().putBoolean("firstrun", true).commit();
+        //TODO: To get "LaunchFragment" to display every launch, keep the below 3 lines uncommented:
+        //TODO-----------------------VV - CODE TO TEST FOR FIRST RUN - VV---------------------------
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
+        //TODO-----------------------^^ - CODE TO TEST FOR FIRST RUN - ^^---------------------------
 
         //------------------------------------------------------------------------------------------
 
