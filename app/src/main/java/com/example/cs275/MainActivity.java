@@ -35,15 +35,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
 
         //TODO: To get "LaunchFragment" to display every launch, keep the below 3 lines uncommented:
-        //TODO-----------------------VV - CODE TO TEST FOR FIRST RUN - VV---------------------------
+        //TODO-----------------------VV-- CODE TO TEST FOR FIRST RUN --VV---------------------------
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.commit();
-        //TODO-----------------------^^ - CODE TO TEST FOR FIRST RUN - ^^---------------------------
+        //TODO-----------------------^^-- CODE TO TEST FOR FIRST RUN --^^---------------------------
+        //Also note: Clearing app storage will also reset shared preferences and will execute as the first launch
+        //Clearing app storage will also reset permissions, and the user will need to re enable location to prevent app crash
 
         //------------------------------------------------------------------------------------------
-
         //If app is launched for the first time:
+
         if (isFirstLaunch()) {
             prefs.edit().putBoolean("firstrun", false).commit();
             super.onCreate(savedInstanceState);
@@ -57,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         } else { //---------------------------------------------------------------------------------
-
             //If app has previously been launched:
+
             super.onCreate(savedInstanceState);
 //            setContentView(R.layout.activity_main);
             setupMainActivityNav();
@@ -69,10 +71,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //==============================================================================================
 
+    //Tests if application is being launched for the first time by using shared preferences
     boolean isFirstLaunch() {
+        //App is being launched for the first time:
         if (prefs.getBoolean("firstrun", true)) {
             return true;
-        } else {
+        } else { //App has previously been launched before on the device:
             return false;
         }
     }
@@ -104,15 +108,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //            ft.replace(R.id.nav_host_fragment, frag);
             ft.commit();
-        } else if (id == 2) {
-            setContentView(R.layout.fragment_launch);
-            LaunchFragment launchFragment = new LaunchFragment();
-            if (getSupportFragmentManager().findFragmentById(android.R.id.content)==null) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(android.R.id.content, launchFragment)
-                        .commit();
-            }
-        }
+        }// else if (id == 2) {
+//            setContentView(R.layout.fragment_launch);
+//            LaunchFragment launchFragment = new LaunchFragment();
+//            if (getSupportFragmentManager().findFragmentById(android.R.id.content)==null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(android.R.id.content, launchFragment)
+//                        .commit();
+//            }
+//        }
     }
 
     //==============================================================================================
