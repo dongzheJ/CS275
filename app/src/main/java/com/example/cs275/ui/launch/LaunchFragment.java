@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -29,10 +30,19 @@ public class LaunchFragment extends Fragment {
                 ViewModelProviders.of(this).get(com.example.cs275.ui.launch.LaunchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_launch, container, false);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
         Button btn = (Button) root.findViewById(R.id.complete);
+        final EditText userName = (EditText) root.findViewById(R.id.text_name);
+        final EditText email = (EditText) root.findViewById(R.id.text_email);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String userNameString = userName.getText().toString();
+                String emailString = email.getText().toString();
                 mListener.changeFragment(1);
             }
         });

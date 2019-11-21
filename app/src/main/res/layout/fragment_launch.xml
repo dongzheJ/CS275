@@ -29,12 +29,12 @@
         tools:targetApi="o" />
 
     <EditText
-        android:id="@+id/text2"
+        android:id="@+id/text_email"
         android:layout_below="@+id/text_name"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:inputType="text"
-        android:hint="Other Text Placeholder"
+        android:hint="Email"
         tools:targetApi="o" />
 
     <Button
