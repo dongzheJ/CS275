@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        userPermission();
+//        userPermission();
 //        homeViewModel =
 //                ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_send:
-                userPermission();
+//                userPermission();
                 // Do something
 //                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 //                builder.setTitle("Title");
@@ -138,76 +138,76 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         }
     }
 
-    private void userPermission() {
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle("Required Location Permission")
-                            .setMessage("You have to give this app permission to access feature")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ActivityCompat.requestPermissions(getActivity(),
-                                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                                            MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-                                }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-
-                                }
-                            })
-                            .create()
-                            .show();
-
-
-        } else {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-
-
-        }
-
-    } else {
-        // Permission has already been granted
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                            lat = location.getLatitude();
-                            lon = location.getLongitude();
-                            curr.setLatitude(lat);
-                            curr.setLongitude(lon);
-                            distance = library.distanceTo(curr);
-                            String str = String.format("%.02f", distance);
-                            tv.append(str + " meters away from Library");
-                            // determine whether user in travel
-                            if (distance >= 500 && !userInTravel) {
-                                tv.append("\nUser in travel");
-                                userInTravel = true;
-                            }
-                            if (userInTravel && distance <= 100) {
-                                tv.append("\nYou are back home");
-                                userInTravel = false;
-                            }
-//                            tv.append("\nCurrent local: " + String.format(Locale.US, "%s : %s", lat, lon));
-                        }
-                    }
-                });
-    }
-    }
-
-
+//    private void userPermission() {
+//        if (ContextCompat.checkSelfPermission(getActivity(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+//                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//                    new AlertDialog.Builder(getActivity())
+//                            .setTitle("Required Location Permission")
+//                            .setMessage("You have to give this app permission to access feature")
+//                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    ActivityCompat.requestPermissions(getActivity(),
+//                                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                                            MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+//                                }
+//                            })
+//                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//
+//                                }
+//                            })
+//                            .create()
+//                            .show();
+//
+//
+//        } else {
+//            ActivityCompat.requestPermissions(getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+//
+//
+//        }
+//
+//    } else {
+//        // Permission has already been granted
+//        fusedLocationClient.getLastLocation()
+//                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+//                    @Override
+//                    public void onSuccess(Location location) {
+//                        // Got last known location. In some rare situations this can be null.
+//                        if (location != null) {
+//                            // Logic to handle location object
+//                            lat = location.getLatitude();
+//                            lon = location.getLongitude();
+//                            curr.setLatitude(lat);
+//                            curr.setLongitude(lon);
+//                            distance = library.distanceTo(curr);
+//                            String str = String.format("%.02f", distance);
+//                            tv.append(str + " meters away from Library");
+//                            // determine whether user in travel
+//                            if (distance >= 500 && !userInTravel) {
+//                                tv.append("\nUser in travel");
+//                                userInTravel = true;
+//                            }
+//                            if (userInTravel && distance <= 100) {
+//                                tv.append("\nYou are back home");
+//                                userInTravel = false;
+//                            }
+////                            tv.append("\nCurrent local: " + String.format(Locale.US, "%s : %s", lat, lon));
+//                        }
+//                    }
+//                });
+//    }
+//    }
+//
+//
 
 
     @Override
