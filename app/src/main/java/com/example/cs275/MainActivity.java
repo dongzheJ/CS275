@@ -6,13 +6,22 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.example.cs275.ui.home.HomeFragment;
 import com.example.cs275.ui.launch.LaunchFragment;
+import com.example.cs275.ui.launch.LogInFragment;
 import com.example.cs275.ui.launch.OnFragmentInteractionListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -35,6 +44,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int STORAGE_PERMISSION_CODE=1;
     private int LOCATION_PERMISSION_CODE=1;
     private int requestCode2;
+
+    //==============================================================================================
+    //Login variables
+    EditText emailId, password;
+    Button btnSignUp;
+    TextView tvSignIn;
+    FirebaseAuth mFirebaseAuth;
+
 
     //==============================================================================================
 
@@ -86,12 +103,67 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .commit();
             }
 
-        } else { //---------------------------------------------------------------------------------
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            emailId = findViewById(R.id.text_name);
+            password = findViewById(R.id.text2);
+            tvSignIn = findViewById(R.id.textView);
+            btnSignUp = findViewById(R.id.signIn);
+            btnSignUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String email = emailId.getText().toString();
+                    String pwd = password.getText().toString();
+                    if (email.isEmpty()){
+                        emailId.setError("Please enter email");
+                        emailId.requestFocus();
+                    }
+                    else if (pwd.isEmpty()){
+                        password.setError("Please enter password");
+                        password.requestFocus();
+                    }
+
+                    else if (email.isEmpty() &&  pwd.isEmpty()){
+                        Toast.makeText(MainActivity.this, "Fields are empty", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else {
+                        mFirebaseAuth.createUserWithEmailAndPassword(email,pwd).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (!task.isSuccessful()){
+                                    Toast.makeText(MainActivity.this, "Sign up Failed", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    setupMainActivityNav();
+                                }
+                            }
+                        });
+                    }
+
+                }
+            });
+
+            tvSignIn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogInFragment login = new LogInFragment();
+                    if (getSupportFragmentManager().findFragmentById(android.R.id.content)==null) {
+                        getSupportFragmentManager().beginTransaction()
+                                .add(android.R.id.content,login)
+                                .commit();
+                    }
+                }
+            });
+
+
+
+    } else { //---------------------------------------------------------------------------------
             //If app has previously been launched:
 
             super.onCreate(savedInstanceState);
 //            setContentView(R.layout.activity_main);
             setupMainActivityNav();
+
         }
 
 
@@ -219,17 +291,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            Fragment frag = new HomeFragment();
             setupMainActivityNav();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.nav_host_fragment, frag);
             ft.commit();
-        }// else if (id == 2) {
-//            setContentView(R.layout.fragment_launch);
-//            LaunchFragment launchFragment = new LaunchFragment();
-//            if (getSupportFragmentManager().findFragmentById(android.R.id.content)==null) {
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(android.R.id.content, launchFragment)
-//                        .commit();
-//            }
-//        }
+        }
     }
 
     //==============================================================================================

@@ -29,7 +29,7 @@ public class LaunchFragment extends Fragment {
                 ViewModelProviders.of(this).get(com.example.cs275.ui.launch.LaunchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_launch, container, false);
 
-        Button btn = (Button) root.findViewById(R.id.complete);
+        Button btn = (Button) root.findViewById(R.id.signIn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
