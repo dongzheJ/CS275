@@ -2,6 +2,7 @@ package com.example.cs275.ui.launch;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,23 +39,61 @@ public class LaunchFragment extends Fragment {
         Button btn = (Button) root.findViewById(R.id.complete);
         final EditText userName = (EditText) root.findViewById(R.id.text_name);
         final EditText email = (EditText) root.findViewById(R.id.text_email);
+        final TextView statusTextView = (TextView) root.findViewById(R.id.text_status);
+
+        final String status = "Please input the below information:";
+//        String nameMsg = "Name";
+//        String emailMsg = "Email";
+//        userName.setText(nameMsg);
+//        email.setText(emailMsg);
+        statusTextView.setText(status);
+
+//        userName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                userName.setHint("");
+//            }
+//        });
+//
+//        email.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                email.setHint("");
+//            }
+//        });
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+        //Below code executes upon button press:
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+//                String userNameString = "";
+//                String emailString = "";
+
+                //Retrieve strings inputted by user in EditText fields:
                 String userNameString = userName.getText().toString();
                 String emailString = email.getText().toString();
 
-                DatabaseHelper db = new DatabaseHelper(getActivity());
-                db.insertData(userNameString, "Last Name", emailString, "test", "test");
-                Cursor cur = db.getAllData();
+                //If email is not in proper format:
+                if (!emailString.contains("@") || !emailString.contains(".")) {
+                    String status = "Please check the format of your input and try again!";
+                    statusTextView.setText(status);
+                    statusTextView.setTextColor(Color.RED);
+                } else { //If email is in proper format:
+
+                    //Add user input to database:
+                    DatabaseHelper db = new DatabaseHelper(getActivity());
+                    db.insertData(userNameString, "Last Name", emailString, "test", "test");
+//                    Cursor cur = db.getAllData();
 //                if (cur.moveToFirst()) {
 //                    System.out.println(cur.getString(cur.getColumnIndex("FNAME")));
 //                }
 
-                mListener.changeFragment(1);
+                    //Change fragment to main view with navigation:
+                    mListener.changeFragment(1);
+                }
             }
         });
 

@@ -5,4 +5,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="set_home">SetHome</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="done">Done!</string>
 </resources>

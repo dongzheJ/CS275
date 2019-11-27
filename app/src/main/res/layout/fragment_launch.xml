@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:inputType="text"
-        android:hint="Name"
+        android:hint="@string/name"
         tools:targetApi="o" />
 
     <EditText
@@ -47,14 +47,14 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:inputType="text"
-        android:hint="Email"
+        android:hint="@string/email"
         tools:targetApi="o" />
 
     <Button
         android:id="@+id/complete"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:text="Done!"
+        android:text="@string/done"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
