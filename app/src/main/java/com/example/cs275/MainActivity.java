@@ -23,6 +23,8 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
+    public DatabaseHelper db = new DatabaseHelper(this);
+
     //Use "prefs" below to check shared preferences for launch information:
     SharedPreferences prefs = null;
 
@@ -67,6 +69,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         //------------------------------------------------------------------------------------------
+    }
+
+    //==============================================================================================
+
+    //Returns database
+    public DatabaseHelper getDB() {
+        return db;
     }
 
     //==============================================================================================
