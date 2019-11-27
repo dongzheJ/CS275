@@ -17,6 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ID = "ID";
     public static final String FNAME = "FNAME";
     public static final String LNAME = "LNAME";
+    public static final String EMAIL = "EMAIL";
     public static final String SURVEYTIME = "SURVEYTIME";
     public static final String SURVEYGRAB = "SURVEYGRAB";
     public static final String GENRE = "GENRE";
@@ -28,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, FNAME TEXT, LNAME TEXT, SURVEYTIME TEXT, " +
+        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, FNAME TEXT, LNAME TEXT, EMAIL TEXT, SURVEYTIME TEXT, " +
                 "                                                SURVEYGRAB TEXT)");
     }
 
@@ -38,11 +39,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public boolean insertData(String fname, String lname, String sTime, String sGrab){
+    public boolean insertData(String fname, String lname, String email, String sTime, String sGrab){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(FNAME, fname);
         contentValues.put(LNAME, lname);
+        contentValues.put(EMAIL, email);
         contentValues.put(SURVEYTIME, sTime);
         contentValues.put(SURVEYGRAB, sGrab);
         long result = db.insert(TABLE_NAME, null, contentValues);

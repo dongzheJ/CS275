@@ -46,13 +46,9 @@ public class LaunchFragment extends Fragment {
             public void onClick(View view) {
                 String userNameString = userName.getText().toString();
                 String emailString = email.getText().toString();
-//                MainActivity temp = new MainActivity();
-//                DatabaseHelper db = temp.getDB();
-//                db.insertData(userNameString, emailString, "test", "test");
-//                Cursor cur = db.getAllData();
-//                System.out.println(cur.getString(cur.getColumnIndex("FNAME")));
+
                 DatabaseHelper db = new DatabaseHelper(getActivity());
-                db.insertData(userNameString, emailString, "test", "test");
+                db.insertData(userNameString, "Last Name", emailString, "test", "test");
                 Cursor cur = db.getAllData();
                 if (cur.moveToFirst()) {
                     System.out.println(cur.getString(cur.getColumnIndex("FNAME")));
