@@ -50,21 +50,21 @@ public class LaunchFragment extends Fragment {
                 DatabaseHelper db = new DatabaseHelper(getActivity());
                 db.insertData(userNameString, "Last Name", emailString, "test", "test");
                 Cursor cur = db.getAllData();
-                if (cur.moveToFirst()) {
-                    System.out.println(cur.getString(cur.getColumnIndex("FNAME")));
-                }
+//                if (cur.moveToFirst()) {
+//                    System.out.println(cur.getString(cur.getColumnIndex("FNAME")));
+//                }
 
                 mListener.changeFragment(1);
             }
         });
 
-        final TextView textView = root.findViewById(R.id.text_launch);
-        launchViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        final TextView textView = root.findViewById(R.id.text_launch);
+//        launchViewModel.getText().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 
