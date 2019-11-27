@@ -77,7 +77,7 @@ public class LaunchFragment extends Fragment {
                 String emailString = email.getText().toString();
 
                 //If email is not in proper format:
-                if (!emailString.contains("@") || !emailString.contains(".")) {
+                if (!emailString.contains("@") || !emailString.contains(".") || userNameString.length() == 0) {
                     String status = "Please check the format of your input and try again!";
                     statusTextView.setText(status);
                     statusTextView.setTextColor(Color.RED);
