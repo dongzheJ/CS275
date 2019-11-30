@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/survey_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.submit.SurveyActivity">
+
+    <TextView
+        android:id="@+id/survey_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt"
+        android:gravity="center"
+        android:text="@string/survey_title"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/survey_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="@string/survey_sub"
+        android:layout_marginTop="10pt"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10pt"
+        android:layout_marginLeft="3pt">
+
+        <TextView
+            android:id="@+id/survey_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:gravity="left"
+            android:text="@string/survey_travel"
+            android:textSize="18sp" />
+
+
+        <EditText
+            android:id="@+id/survey_travel_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5pt"
+            android:layout_marginRight="15pt"
+            android:hint="@string/survey_loc"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10pt"
+        android:layout_marginLeft="3pt">
+
+        <TextView
+            android:id="@+id/survey_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:gravity="left"
+            android:text="@string/survey_mode"
+            android:textSize="18sp" />
+
+
+        <Spinner
+            android:id="@+id/survey_mode_answer"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:layout_marginLeft="5pt"
+            android:gravity="right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10pt"
+        android:layout_marginLeft="3pt">
+
+        <TextView
+            android:id="@+id/survey_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:gravity="left"
+            android:text="@string/survey_length"
+            android:textSize="18sp" />
+
+
+        <Spinner
+            android:id="@+id/survey_length_answer"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:layout_marginLeft="5pt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10pt"
+        android:layout_marginLeft="3pt">
+
+        <TextView
+            android:id="@+id/survey_enjoy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:gravity="left"
+            android:text="@string/survey_enjoyed"
+            android:textSize="18sp" />
+
+
+        <Spinner
+            android:id="@+id/survey_enjoy_answer"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:layout_marginLeft="5pt" />
+    </LinearLayout>
+
+    <Button
+        android:layout_marginTop="20pt"
+        android:id="@+id/survey_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="@string/sub_test"></Button>
+
+
+</LinearLayout>

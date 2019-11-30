@@ -1,6 +1,7 @@
 package com.example.cs275;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Use "prefs" below to check shared preferences for launch information:
     SharedPreferences prefs = null;
 
+    SurveyDatabaseHelper dbh;
+
     //==============================================================================================
 
     @Override
@@ -33,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Use shared preferences to check if app has been launched previously:
         prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
+
+        dbh = new SurveyDatabaseHelper(this);
+//        dbh.onCreate(dbh.getWritableDatabase());
 
         //TODO: To get "LaunchFragment" to display every launch, keep the below 3 lines uncommented:
         //TODO-----------------------VV-- CODE TO TEST FOR FIRST RUN --VV---------------------------
@@ -74,11 +80,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Tests if application is being launched for the first time by using shared preferences
     boolean isFirstLaunch() {
         //App is being launched for the first time:
-        if (prefs.getBoolean("firstrun", true)) {
-            return true;
-        } else { //App has previously been launched before on the device:
-            return false;
-        }
+//        if (prefs.getBoolean("firstrun", true)) {
+//            return true;
+//        } else { //App has previously been launched before on the device:
+//            return false;
+//        }
+        return false;
     }
 
     //==============================================================================================
