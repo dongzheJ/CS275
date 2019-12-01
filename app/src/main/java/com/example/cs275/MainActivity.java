@@ -1,8 +1,13 @@
 package com.example.cs275;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 
 //import com.example.cs275.ui.home.HomeFragment;
 import com.example.cs275.ui.launch.LaunchFragment;
@@ -10,6 +15,9 @@ import com.example.cs275.ui.launch.OnFragmentInteractionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 //import androidx.fragment.app.Fragment;
@@ -19,12 +27,20 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 //==================================================================================================
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
     //Use "prefs" below to check shared preferences for launch information:
     SharedPreferences prefs = null;
+    private int STORAGE_PERMISSION_CODE=1;
+    private int LOCATION_PERMISSION_CODE=1;
+    private int requestCode2;
+
 
     //==============================================================================================
 
@@ -48,15 +64,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (isFirstLaunch()) {
             prefs.edit().putBoolean("firstrun", false).commit();
-            super.onCreate(savedInstanceState);
-//            setupMainActivityNav();
-            setContentView(R.layout.fragment_launch);
-            LaunchFragment launchFragment = new LaunchFragment();
-            if (getSupportFragmentManager().findFragmentById(android.R.id.content)==null) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(android.R.id.content, launchFragment)
-                        .commit();
+
+            //Check if the location  permission had been granted if so make a toast else call the location  permission function
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ){
+           }
+            else{
+                requestLocationPermission();
+                //requestStoragePermission();
             }
+
+                super.onCreate(savedInstanceState);
+                //setupMainActivityNav();
+                setContentView(R.layout.fragment_launch);
+                LaunchFragment launchFragment = new LaunchFragment();
+                if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(android.R.id.content, launchFragment)
+                            .commit();
+                }
+
 
         } else { //---------------------------------------------------------------------------------
             //If app has previously been launched:
@@ -68,6 +94,65 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //------------------------------------------------------------------------------------------
     }
+
+    //The location permission function
+    private void requestLocationPermission() {
+        //Create an alert dialog for the location permission and set a message
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION )) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permission is needed because of this and that ")
+                    .setPositiveButton("ok ", new DialogInterface.OnClickListener() {
+                        //Give the permission with the allow button
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
+                            requestCode2=LOCATION_PERMISSION_CODE;
+                        }
+                    })
+                    //Deny the permission with the deny button
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }
+        else{
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
+        }
+    }
+
+
+    //Create an alert dialog for the storage permission and set a message
+//    private void requestStoragePermission() {
+//        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE )) {
+//            new AlertDialog.Builder(this)
+//                    .setTitle("Permission needed")
+//                    .setMessage("This permission is needed because of this and that ")
+//                    .setPositiveButton("ok ", new DialogInterface.OnClickListener() {
+//                        //Give the permission with the allow button
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+//
+//                        }
+//                    })
+//                    //Deny the permission with the deny button
+//                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    })
+//                    .create().show();
+//        }
+//        else{
+//            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+//
+//        }
+//    }
 
     //==============================================================================================
 
