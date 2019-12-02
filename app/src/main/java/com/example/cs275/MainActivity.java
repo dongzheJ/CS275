@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-
 //import com.example.cs275.ui.home.HomeFragment;
 import com.example.cs275.ui.launch.LaunchFragment;
 import com.example.cs275.ui.launch.OnFragmentInteractionListener;
@@ -45,9 +44,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int LOCATION_PERMISSION_CODE=1;
     private int requestCode2;
 
-    private AlarmManager alarmMgr;
-    private PendingIntent alarmIntent;
-
     //==============================================================================================
 
     @Override
@@ -65,13 +61,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Also note: Clearing app storage will also reset shared preferences and will execute as the first launch
         //Clearing app storage will also reset permissions, and the user will need to re enable location to prevent app crash
 
-        //------------------------------------------------------------------------------------------
-        //Set up alarm manager to go off once every 24 hours at time determined below:
+        //==========================================================================================
 
+        //Set up alarm manager to go off once every 24 hours at time determined below:
         Calendar updateTime = Calendar.getInstance();
         updateTime.setTimeZone(TimeZone.getTimeZone("EST"));
-        updateTime.set(Calendar.HOUR_OF_DAY, 19);
-        updateTime.set(Calendar.MINUTE, 35);
+        updateTime.set(Calendar.HOUR_OF_DAY, 22);
+        updateTime.set(Calendar.MINUTE, 26);
 
         Intent intentForAlarm = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
@@ -121,30 +117,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //The location permission function
     private void requestLocationPermission() {
         //Create an alert dialog for the location permission and set a message
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION )) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Permission needed")
-                    .setMessage("This permission is needed because of this and that ")
-                    .setPositiveButton("ok ", new DialogInterface.OnClickListener() {
-                        //Give the permission with the allow button
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
-                            requestCode2=LOCATION_PERMISSION_CODE;
-                        }
-                    })
-                    //Deny the permission with the deny button
-                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
+        boolean permissionAccessCoarseLocationApproved =
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED;
+
+        if (permissionAccessCoarseLocationApproved) {
+            boolean backgroundLocationPermissionApproved =
+                    ActivityCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED;
+
+            if (backgroundLocationPermissionApproved) {
+                // App can access location both in the foreground and in the background.
+                // Start your service that doesn't have a foreground service type
+                // defined.
+            } else {
+                // App can only access location in the foreground. Display a dialog
+                // warning the user that your app must have all-the-time access to
+                // location in order to function properly. Then, request background
+                // location.
+                ActivityCompat.requestPermissions(this, new String[] {
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                        LOCATION_PERMISSION_CODE);
+            }
+        } else {
+            // App doesn't have access to the device's location at all. Make full request
+            // for permission.
+            ActivityCompat.requestPermissions(this, new String[] {
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    },
+                    LOCATION_PERMISSION_CODE);
         }
-        else{
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
-        }
+
+//        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION )) {
+//            new AlertDialog.Builder(this)
+//                    .setTitle("Permission needed")
+//                    .setMessage("This permission is needed because of this and that ")
+//                    .setPositiveButton("ok ", new DialogInterface.OnClickListener() {
+//                        //Give the permission with the allow button
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {
+////                                    Manifest.permission.ACCESS_COARSE_LOCATION,
+//                                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//                            }, LOCATION_PERMISSION_CODE);
+//                            requestCode2=LOCATION_PERMISSION_CODE;
+//                        }
+//                    })
+//                    //Deny the permission with the deny button
+//                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    })
+//                    .create().show();
+//        }
+//        else{
+//            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
+//        }
     }
 
 
