@@ -1,8 +1,13 @@
 package com.example.cs275;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 //import com.example.cs275.ui.home.HomeFragment;
 import com.example.cs275.ui.launch.LaunchFragment;
@@ -19,12 +24,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 //==================================================================================================
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
     //Use "prefs" below to check shared preferences for launch information:
     SharedPreferences prefs = null;
+
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
 
     //==============================================================================================
 
@@ -44,6 +55,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Clearing app storage will also reset permissions, and the user will need to re enable location to prevent app crash
 
         //------------------------------------------------------------------------------------------
+        //Set up alarm manager to go off once every 24 hours at time determined below:
+
+        Calendar updateTime = Calendar.getInstance();
+        updateTime.setTimeZone(TimeZone.getTimeZone("EST"));
+        updateTime.set(Calendar.HOUR_OF_DAY, 19);
+        updateTime.set(Calendar.MINUTE, 35);
+
+        Intent intentForAlarm = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                0, intentForAlarm, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarms = (AlarmManager) this.getSystemService(
+                Context.ALARM_SERVICE);
+        alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                updateTime.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
+
+        //==========================================================================================
         //If app is launched for the first time:
 
         if (isFirstLaunch()) {
@@ -57,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .add(android.R.id.content, launchFragment)
                         .commit();
             }
-
         } else { //---------------------------------------------------------------------------------
             //If app has previously been launched:
 
@@ -66,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setupMainActivityNav();
         }
 
-        //------------------------------------------------------------------------------------------
+        ///==========================================================================================
     }
 
     //==============================================================================================
