@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 //==================================================================================================
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -17,6 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 //        Toast.makeText(arg0, "I'm running", Toast.LENGTH_SHORT).show();
 
+        System.out.println("========= " + DateFormat.getDateTimeInstance().format(new Date()) + " =========");
         System.out.println("1================================================TESTING================================================================");
         System.out.println("2================================================TESTING================================================================");
         System.out.println("3================================================TESTING================================================================");
