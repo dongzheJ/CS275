@@ -3,6 +3,8 @@ package com.example.cs275.ui.home;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.InputType;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,11 +33,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.io.IOException;
+import java.util.List;
+
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
-//    private HomeViewModel homeViewModel;
+    // private HomeViewModel homeViewModel;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     private GoogleMap mMap;
+    private SupportMapFragment mapFragment;
+    private SearchView searchView;
     private FusedLocationProviderClient fusedLocationClient;
     private TextView tv;
     private double lat = 0.0, lon = 0.0;
@@ -49,24 +57,61 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        homeViewModel =
-//                ViewModelProviders.of(this).get(HomeViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-//        final TextView textView = root.findViewById(R.id.text_home);
-//        homeViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
+
+        searchView = (SearchView) root.findViewById(R.id.sv_location);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
+        //mapFragment.getMapAsync(this);
+
+        //Listen to the search
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                //Get the location if not empty
+                if (location != null|| !location.equals("")){
+                    Geocoder geocoder = new Geocoder(getActivity());
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1);
+
+                    }
+                    catch(IOException e){
+                        e.printStackTrace();
+                    }
+
+                    Address address = addressList.get(0);
+                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    //Add marker to the map location searched
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(location));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
+
+        //Redo the map
         mapFragment.getMapAsync(this);
 
-        //
+
+
         tv = root.findViewById(R.id.text);
         library.setLatitude(44.477239);
         library.setLongitude(-73.196687);
+
+
+
+
 
         // get user current location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
