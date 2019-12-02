@@ -34,10 +34,6 @@ import androidx.navigation.ui.NavigationUI;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 //==================================================================================================
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
@@ -92,23 +88,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (isFirstLaunch()) {
             prefs.edit().putBoolean("firstrun", false).commit();
 
-            //Check if the location  permission had been granted if so make a toast else call the location  permission function
+            //Check if the location  permission had been granted if so make a toast else call the location permission function
             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ){
-           }
-            else{
+            } else {
                 requestLocationPermission();
                 //requestStoragePermission();
             }
 
-                super.onCreate(savedInstanceState);
-                //setupMainActivityNav();
-                setContentView(R.layout.fragment_launch);
-                LaunchFragment launchFragment = new LaunchFragment();
-                if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
-                    getSupportFragmentManager().beginTransaction()
-                            .add(android.R.id.content, launchFragment)
-                            .commit();
-                }
+            super.onCreate(savedInstanceState);
+            //setupMainActivityNav();
+            setContentView(R.layout.fragment_launch);
+            LaunchFragment launchFragment = new LaunchFragment();
+            if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(android.R.id.content, launchFragment)
+                        .commit();
+            }
 
         } else { //---------------------------------------------------------------------------------
             //If app has previously been launched:
