@@ -9,7 +9,7 @@ public class Submission {
 
     public Submission(int id, String location, String mode, String length, String enjoyed){
         mId = id;
-        mLength = location;
+        mLocation = location;
         mMode = mode;
         mLength = length;
         mEnjoyed = enjoyed;

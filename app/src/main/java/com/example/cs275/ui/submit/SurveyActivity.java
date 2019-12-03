@@ -68,10 +68,6 @@ public class SurveyActivity extends AppCompatActivity {
         mSubmitBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //Prepares values for db insertion
-                if(mLocation.getText().toString() == null){
-                    Toast.makeText(SurveyActivity.this, "Location is null", Toast.LENGTH_SHORT).show();
-                }
                 if(mLocation.getText().toString().isEmpty()){
                     mLocation.setText("N/A");
                 }
@@ -81,7 +77,7 @@ public class SurveyActivity extends AppCompatActivity {
                                mEnjoy.getSelectedItem().toString());
 
                 if(isInserted){
-                    Toast.makeText(SurveyActivity.this, "Submission Successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SurveyActivity.this, mLocation.getText().toString(), Toast.LENGTH_SHORT).show();
 //                    SurveyActivity.this.getSupportFragmentManager().beginTransaction()
 ////                            .replace(R.id.survey_layout, new NotificationsFragment(), "noteFrag")
 ////                            .commit();
