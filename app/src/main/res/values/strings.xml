@@ -11,4 +11,5 @@
     <string name="string_home_zip_location">string/Home Zip Location</string>
     <string name="home_zip_code">Home Zip Code</string>
     <string name="search">search</string>
+    <string name="submit">Submit</string>
 </resources>
