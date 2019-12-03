@@ -57,14 +57,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private Marker searchMarker;
     private SupportMapFragment mapFragment;
     private SearchView searchView;
+    private SearchView HomeView;
     private FusedLocationProviderClient fusedLocationClient;
     private TextView tv;
     private String home;
     private double lat = 0.0, lon = 0.0;
+    private LatLng libraryLoc = new LatLng(44.477239, -73.196687);
+    private Location library = new Location("Library");
     private Location curr = new Location("curr");
     // distance to store distance between home and current location in meters
     private double distance = 0.0;
     private boolean userInTravel = false;
+    private String homeString ="Home";
     private Button mButton;
     private Address homeStop;
 
@@ -76,21 +80,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final EditText userHome = (EditText) root.findViewById(R.id.userAddress);
         searchView = (SearchView) root.findViewById(R.id.sv_location);
-        //final String status = "Please input the below information:";
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         //mapFragment.getMapAsync(this);
 
         //Add the popup
-        popupHome = new Dialog(getActivity());
-        popupHome.setContentView(R.layout.set_home);
-        homeButton = (Button) popupHome.findViewById(R.id.homeAddressEnter);
-        homeButton.setOnClickListener(this);
-        close = (TextView) popupHome.findViewById(R.id.closePopup);
-        close.setOnClickListener(this);
-        popupHome.show();
+        if (homeAddress == null) {
+            popupHome = new Dialog(getActivity());
+            popupHome.setContentView(R.layout.set_home);
+            close = (TextView) popupHome.findViewById(R.id.closePopup);
+            close.setOnClickListener(this);
+            popupHome.show();
+        }
 
         //Listen to the search
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -99,8 +101,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 String location = searchView.getQuery().toString();
                 List<Address> addressList = null;
 
-                //Get the location if not empty
-                if (location != null|| !location.equals("")){
+                //Get the location if not empty and home address is not empty
+                if (location != null  &&  homeAddress != null ){
                     Geocoder geocoder = new Geocoder(getActivity());
                     try {
                         addressList = geocoder.getFromLocationName(location, 1);
@@ -117,6 +119,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                     searchMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(location));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
                 }
+
+                //Create the home marker
+                else if (location != null && homeAddress == null){
+                    Geocoder geocoder = new Geocoder(getActivity());
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1);
+
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+                    Address address = addressList.get(0);
+                    LatLng home = new LatLng(address.getLatitude(), address.getLongitude());
+                    //Add marker to the map location searched
+
+                    homeAddress = mMap.addMarker(new MarkerOptions().position(home).title(homeString));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(home,10));
+                }
+
                 return false;
             }
 
@@ -144,8 +166,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                             lon = location.getLongitude();
                             curr.setLatitude(lat);
                             curr.setLongitude(lon);
-                            String str = String.format("%.02f", distance);
-                           tv.append(str + " meters away from Library");
                             // determine whether user in travel
                             if (distance >= 500 && !userInTravel){
                                 tv.append("\nUser in travel");
@@ -171,36 +191,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.homeAddressEnter:
-                final EditText userHome = (EditText) v.findViewById(R.id.userAddress);
-                final String status = "Please input the below information:";
-                userHome.setText(status);
-                if (userHome.length()==0){
-                    userHome.setText(status);
-                    userHome.setTextColor(Color.RED);
-                }
-                else{
-                    List<Address>homeBase;
-                    Geocoder geocoder = new Geocoder(getActivity());
-                    try {
-                        homeBase = geocoder.getFromLocationName(userHome.toString(), 1);
-
-                    }
-                    catch(IOException e){
-                        e.printStackTrace();
-                    }
-
-                    LatLng Homelocal = new LatLng(homeStop.getLatitude(), homeStop.getLongitude());
-                    homeAddress = mMap.addMarker(new MarkerOptions().position(Homelocal).title(home));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Homelocal,10));
-                }
-                break;
-
             case R.id.closePopup:
                 popupHome.dismiss();
+                break;
 
             default:
                 //Nothing
+                break;
         }
     }
 
@@ -208,8 +205,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng vermont = new LatLng(44, -73);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(vermont));
+
+
 
         // current location
         mMap.setMyLocationEnabled(true);

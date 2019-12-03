@@ -9,5 +9,5 @@
     <string name="email">Email</string>
     <string name="done">Done!</string>
     <string name="enter">Enter</string>
-    <string name="HomeLocation">Please enter your home location</string>
+    <string name="HomeLocation">Please enter your home location on the next page in the search button</string>
 </resources>
