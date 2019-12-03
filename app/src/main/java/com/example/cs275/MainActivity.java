@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Set up alarm manager to go off once every 24 hours at time determined below:
         Calendar updateTime = Calendar.getInstance();
         updateTime.setTimeZone(TimeZone.getTimeZone("EST"));
-        updateTime.set(Calendar.HOUR_OF_DAY, 8);
-        updateTime.set(Calendar.MINUTE, 43);
+        updateTime.set(Calendar.HOUR_OF_DAY, 1);
+        updateTime.set(Calendar.MINUTE, 0);
 
         Intent intentForAlarm = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,

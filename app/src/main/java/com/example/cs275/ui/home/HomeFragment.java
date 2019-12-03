@@ -72,6 +72,24 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+//------------------------------------------------------------------------------------------
+//Code sets home location according to coords from database created when choosing home location in LaunchFragment
+
+        DatabaseHelper db = new DatabaseHelper(getActivity());
+        Cursor cur = db.getAllData();
+        String homeLat = "";
+        String homeLong = "";
+        if (cur.moveToFirst()) {
+            homeLat = cur.getString(cur.getColumnIndex("HOMELATITUDE"));
+            homeLong = cur.getString(cur.getColumnIndex("HOMELONGITUDE"));
+        }
+
+        homeLoc.setLatitude(Double.valueOf(homeLat));
+        homeLoc.setLongitude(Double.valueOf(homeLong));
+
+        homeLatLng = new LatLng(Double.valueOf(homeLat), Double.valueOf(homeLong));
+
+//------------------------------------------------------------------------------------------
 
 
 //        tv = root.findViewById(R.id.text);
@@ -150,10 +168,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//        LatLng vermont = new LatLng(44, -73);
+        LatLng vermont = new LatLng(44, -73);
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(homeLatLng));
 //        googleMap.addMarker(new MarkerOptions().position(libraryLoc).title("Library"));
-//        googleMap.addMarker(new MarkerOptions().position(homeLatLng).title("Home"));
+        googleMap.addMarker(new MarkerOptions().position(homeLatLng).title("Home"));
 
         // current location
         mMap.setMyLocationEnabled(true);
