@@ -8,4 +8,6 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="done">Done!</string>
+    <string name="enter">Enter</string>
+    <string name="HomeLocation">Please enter your home location</string>
 </resources>

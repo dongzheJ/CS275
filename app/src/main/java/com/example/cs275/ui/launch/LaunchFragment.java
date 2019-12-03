@@ -42,35 +42,13 @@ public class LaunchFragment extends Fragment {
         final TextView statusTextView = (TextView) root.findViewById(R.id.text_status);
 
         final String status = "Please input the below information:";
-//        String nameMsg = "Name";
-//        String emailMsg = "Email";
-//        userName.setText(nameMsg);
-//        email.setText(emailMsg);
         statusTextView.setText(status);
 
-//        userName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
-//            @Override
-//            public void onFocusChange(View view, boolean b) {
-//                userName.setHint("");
-//            }
-//        });
-//
-//        email.setOnFocusChangeListener(new View.OnFocusChangeListener(){
-//            @Override
-//            public void onFocusChange(View view, boolean b) {
-//                email.setHint("");
-//            }
-//        });
-
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
         //Below code executes upon button press:
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                String userNameString = "";
-//                String emailString = "";
 
                 //Retrieve strings inputted by user in EditText fields:
                 String userNameString = userName.getText().toString();
@@ -97,15 +75,12 @@ public class LaunchFragment extends Fragment {
             }
         });
 
-//        final TextView textView = root.findViewById(R.id.text_launch);
-//        launchViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
         return root;
     }
+
+    //==============================================================================================
+    //Select the home Location
+
 
     //==============================================================================================
 
