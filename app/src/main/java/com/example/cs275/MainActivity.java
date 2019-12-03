@@ -214,11 +214,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Tests if application is being launched for the first time by using shared preferences
     boolean isFirstLaunch() {
         //App is being launched for the first time:
-        if (prefs.getBoolean("firstrun", true)) {
-            return true;
-        } else { //App has previously been launched before on the device:
-            return false;
-        }
+//        if (prefs.getBoolean("firstrun", true)) {
+//            return true;
+//        } else { //App has previously been launched before on the device:
+//            return false;
+//        }
+        return false;
     }
 
     //==============================================================================================
