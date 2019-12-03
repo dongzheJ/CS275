@@ -8,16 +8,27 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 //import com.example.cs275.ui.home.HomeFragment;
 import com.example.cs275.ui.launch.LaunchFragment;
 import com.example.cs275.ui.launch.OnFragmentInteractionListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -33,9 +44,12 @@ import androidx.navigation.ui.NavigationUI;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 //==================================================================================================
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener,
+    GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
 
     //Use "prefs" below to check shared preferences for launch information:
     SharedPreferences prefs = null;
@@ -43,6 +57,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int STORAGE_PERMISSION_CODE=1;
     private int LOCATION_PERMISSION_CODE=1;
     private int requestCode2;
+    private FusedLocationProviderClient fusedLocationclient;
+
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLocation;
+    private LocationManager locationManager;
+    private LocationRequest mLocationRequest;
 
     //==============================================================================================
 
@@ -57,6 +77,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.commit();
+
+        requestPermission();
+        if(ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            return;
+        }
+
+        fusedLocationclient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationclient.getLastLocation().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location!= null){
+                    System.out.println("Works");
+
+                }else{
+                    System.out.println("Nope");
+                }
+            }
+        });
+
         //TODO-----------------------^^-- CODE TO TEST FOR FIRST RUN --^^---------------------------
         //Also note: Clearing app storage will also reset shared preferences and will execute as the first launch
         //Clearing app storage will also reset permissions, and the user will need to re enable location to prevent app crash
@@ -68,6 +107,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         updateTime.setTimeZone(TimeZone.getTimeZone("EST"));
         updateTime.set(Calendar.HOUR_OF_DAY, 8);
         updateTime.set(Calendar.MINUTE, 43);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         Intent intentForAlarm = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
@@ -85,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             prefs.edit().putBoolean("firstrun", false).commit();
 
             //Check if the location  permission had been granted if so make a toast else call the location permission function
-            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ){
+            if (ContextCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ){
             } else {
                 requestLocationPermission();
                 //requestStoragePermission();
@@ -108,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            setContentView(R.layout.activity_main);
             setupMainActivityNav();
         }
+
 
         //==========================================================================================
     }
@@ -267,5 +314,84 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         return false;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        } startLocationUpdates();
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if(mLocation == null){
+            startLocationUpdates();
+        }
+        if (mLocation != null) {
+            double latitude = mLocation.getLatitude();
+            double longitude = mLocation.getLongitude();
+        } else {
+            // Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(3000)
+                .setFastestInterval(5000);
+        // Request location updates
+        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                mLocationRequest, this);
+        Log.d("reque", "--->>>>");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("Test", "Connection Suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i("Test", "Connection failed. Error: " + connectionResult.getErrorCode());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 }
