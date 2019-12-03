@@ -45,7 +45,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback{
+public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
     // private HomeViewModel homeViewModel;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
@@ -73,12 +73,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback{
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        Button HomeButton = (Button) root.findViewById(R.id.homeAddressEnter);
         final EditText userHome = (EditText) root.findViewById(R.id.userAddress);
-        final TextView statusTextView = (TextView) root.findViewById(R.id.text_status);
         searchView = (SearchView) root.findViewById(R.id.sv_location);
-        //final TextView statusTextView = (TextView) root.findViewById(R.id.text_status);
         //final String status = "Please input the below information:";
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -87,23 +86,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback{
         //Add the popup
         popupHome = new Dialog(getActivity());
         popupHome.setContentView(R.layout.set_home);
-        //homeButton.setOnClickListener(this);
+        homeButton = (Button) popupHome.findViewById(R.id.homeAddressEnter);
+        homeButton.setOnClickListener(this);
         close = (TextView) popupHome.findViewById(R.id.closePopup);
-        //close.setOnClickListener(this);
+        close.setOnClickListener(this);
         popupHome.show();
-
-        homeButton.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              TextView tv = (TextView) popupHome.findViewById(R.id.userAddress);
-              if (tv.getText().length()==0) {
-                  final String status = "Please input the below information:";
-                  statusTextView.setText(status);
-                  statusTextView.setTextColor(Color.RED);
-
-
-      }}});
-
 
         //Listen to the search
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -180,7 +167,42 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback{
     }
 
 
+    //Create a case by case onclick for each button pressed
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.homeAddressEnter:
+                final EditText userHome = (EditText) v.findViewById(R.id.userAddress);
+                final String status = "Please input the below information:";
+                userHome.setText(status);
+                if (userHome.length()==0){
+                    userHome.setText(status);
+                    userHome.setTextColor(Color.RED);
+                }
+                else{
+                    List<Address>homeBase;
+                    Geocoder geocoder = new Geocoder(getActivity());
+                    try {
+                        homeBase = geocoder.getFromLocationName(userHome.toString(), 1);
 
+                    }
+                    catch(IOException e){
+                        e.printStackTrace();
+                    }
+
+                    LatLng Homelocal = new LatLng(homeStop.getLatitude(), homeStop.getLongitude());
+                    homeAddress = mMap.addMarker(new MarkerOptions().position(Homelocal).title(home));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Homelocal,10));
+                }
+                break;
+
+            case R.id.closePopup:
+                popupHome.dismiss();
+
+            default:
+                //Nothing
+        }
+    }
 
 
     @Override
