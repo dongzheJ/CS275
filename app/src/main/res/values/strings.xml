@@ -10,4 +10,13 @@
     <string name="done">Done!</string>
     <string name="enter">Enter</string>
     <string name="HomeLocation">Please enter your home location</string>
+    <string name="survey_title">Welcome Home!</string>
+    <string name="survey_sub">Please fill out the survey below.</string>
+    <string name="survey_travel">Location</string>
+    <string name="survey_loc">Location</string>
+    <string name="survey_mode">How did you travel?</string>
+    <string name="survey_length">How long were you gone?</string>
+    <string name="survey_enjoyed">Did you enjoy your trip?</string>
+    <string name="survey_submit">Submit</string>
+    <string name="empty">You have not submitted any surveys</string>
 </resources>

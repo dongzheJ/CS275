@@ -69,6 +69,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private Button mButton;
     private Address homeStop;
 
+    private EditText userHome;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -77,7 +79,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final EditText userHome = (EditText) root.findViewById(R.id.userAddress);
+        userHome = (EditText) root.findViewById(R.id.userAddress);
         searchView = (SearchView) root.findViewById(R.id.sv_location);
         //final String status = "Please input the below information:";
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -173,7 +175,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.homeAddressEnter:
-                final EditText userHome = (EditText) v.findViewById(R.id.userAddress);
+//                userHome = (EditText) v.findViewById(R.id.userAddress);
                 final String status = "Please input the below information:";
                 userHome.setText(status);
                 if (userHome.length()==0){

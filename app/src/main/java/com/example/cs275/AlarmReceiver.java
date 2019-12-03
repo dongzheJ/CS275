@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.cs275.ui.submit.SurveyActivity;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -66,7 +68,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setContentTitle("TripTracker can see that you are traveling!")
                     .setContentText("Please complete a quick travel survey!");
 
-            Intent resultIntent = new Intent(context, MainActivity.class);
+            Intent resultIntent = new Intent(context, SurveyActivity.class);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
             stackBuilder.addParentStack(MainActivity.class);
             stackBuilder.addNextIntent(resultIntent);
