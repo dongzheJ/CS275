@@ -43,7 +43,7 @@ public class DashboardFragment extends Fragment {
         String textName = "Name: ";
         String textEmail = "Email: ";
         if (cur.moveToFirst()) {
-            textName = textName + cur.getString(cur.getColumnIndex("FNAME"));
+            textName = textName + cur.getString(cur.getColumnIndex("NAME"));
             textEmail = textEmail + cur.getString(cur.getColumnIndex("EMAIL"));
         }
         nameTextView.setText(textName);

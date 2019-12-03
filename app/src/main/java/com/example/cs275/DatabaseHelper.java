@@ -14,14 +14,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "Trip_Tracker_DB";
 
     //Fields for database
-    public static final String ID = "ID";
-    public static final String FNAME = "FNAME";
-    public static final String LNAME = "LNAME";
+//    public static final String ID = "ID";
+    public static final String NAME = "NAME";
     public static final String EMAIL = "EMAIL";
     public static final String SURVEYTIME = "SURVEYTIME";
-    public static final String SURVEYGRAB = "SURVEYGRAB";
-    public static final String GENRE = "GENRE";
-    public static final String DESCRIPTION = "DESCRIPTION";
+    public static final String HOMELOCALITY = "HOMELOCALITY";
+    public static final String HOMELATITUDE = "HOMELATITUDE";
+    public static final String HOMELONGITUDE = "HOMELONGITUDE";
+
+//    public static final String SURVEYGRAB = "SURVEYGRAB";
+//    public static final String GENRE = "GENRE";
+//    public static final String DESCRIPTION = "DESCRIPTION";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -29,8 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, FNAME TEXT, LNAME TEXT, EMAIL TEXT, SURVEYTIME TEXT, " +
-                "                                                SURVEYGRAB TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, EMAIL TEXT, SURVEYTIME TEXT, HOMELOCALITY TEXT, HOMELATITUDE TEXT, HOMELONGITUDE TEXT) ");
     }
 
     @Override
@@ -39,14 +41,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public boolean insertData(String fname, String lname, String email, String sTime, String sGrab){
+    public boolean insertData(String name, String email, String surveyTime, String homeLocality, String homeLatitude, String homeLongitude){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(FNAME, fname);
-        contentValues.put(LNAME, lname);
+        contentValues.put(NAME, name);
         contentValues.put(EMAIL, email);
-        contentValues.put(SURVEYTIME, sTime);
-        contentValues.put(SURVEYGRAB, sGrab);
+        contentValues.put(SURVEYTIME, surveyTime);
+        contentValues.put(HOMELOCALITY, homeLocality);
+        contentValues.put(HOMELATITUDE, homeLatitude);
+        contentValues.put(HOMELONGITUDE, homeLongitude);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if(result == -1){
             return false;
