@@ -19,7 +19,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.cs275.DatabaseHelper;
 import com.example.cs275.MainActivity;
 import com.example.cs275.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -48,7 +47,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 //    private Location library = new Location("Library");
     private Location curr = new Location("curr");
     // distance to store distance between home and current location in meters
-//    private double distance = 0.0;
+    private double distance = 0.0;
     private boolean userInTravel = false;
 
 //    private Button mButton;
