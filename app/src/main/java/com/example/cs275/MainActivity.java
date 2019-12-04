@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -17,7 +18,10 @@ import android.widget.Toast;
 //import com.example.cs275.ui.home.HomeFragment;
 import com.example.cs275.ui.launch.LaunchFragment;
 import com.example.cs275.ui.launch.OnFragmentInteractionListener;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -38,6 +42,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 //==================================================================================================
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
@@ -48,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int STORAGE_PERMISSION_CODE=1;
     private int LOCATION_PERMISSION_CODE=1;
     private int requestCode2;
+    private FusedLocationProviderClient fusedLocationclient;
 
     //==============================================================================================
 
@@ -65,6 +72,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //TODO-----------------------^^-- CODE TO TEST FOR FIRST RUN --^^---------------------------
         //Also note: Clearing app storage will also reset shared preferences and will execute as the first launch
         //Clearing app storage will also reset permissions, and the user will need to re enable location to prevent app crash
+
+        requestPermission();
+        if(ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            return;
+        }
+
+        fusedLocationclient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationclient.getLastLocation().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location!= null){
+                    System.out.println("Works");
+
+                }else{
+                    System.out.println("Nope");
+                }
+            }
+        });
 
         //==========================================================================================
 
@@ -90,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             prefs.edit().putBoolean("firstrun", false).commit();
 
             //Check if the location  permission had been granted if so make a toast else call the location permission function
-            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ){
+            if (ContextCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ){
             } else {
                 requestLocationPermission();
                 //requestStoragePermission();
@@ -219,12 +244,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Tests if application is being launched for the first time by using shared preferences
     boolean isFirstLaunch() {
         //App is being launched for the first time:
-//        if (prefs.getBoolean("firstrun", true)) {
-//            return true;
-//        } else { //App has previously been launched before on the device:
-//            return false;
-//        }
-        return false;
+        if (prefs.getBoolean("firstrun", true)) {
+            return true;
+        } else { //App has previously been launched before on the device:
+            return false;
+        }
+//        return false;
     }
 
     //==============================================================================================
@@ -272,5 +297,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         return false;
+    }
+
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 }

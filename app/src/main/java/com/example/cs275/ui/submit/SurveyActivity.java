@@ -3,6 +3,7 @@ package com.example.cs275.ui.submit;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.cs275.MainActivity;
 import com.example.cs275.R;
 import com.example.cs275.SurveyDatabaseHelper;
 import com.example.cs275.ui.notifications.NotificationsFragment;
@@ -66,20 +68,20 @@ public class SurveyActivity extends AppCompatActivity {
         mSubmitBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //Prepares values for db insertion
                 if(mLocation.getText().toString().isEmpty()){
                     mLocation.setText("N/A");
                 }
                 boolean isInserted = dbh.insertData(mLocation.getText().toString(),
-                               mMode.getSelectedItem().toString(),
-                               mLength.getSelectedItem().toString(),
-                               mEnjoy.getSelectedItem().toString());
+                        mMode.getSelectedItem().toString(),
+                        mLength.getSelectedItem().toString(),
+                        mEnjoy.getSelectedItem().toString());
 
                 if(isInserted){
-                    Toast.makeText(SurveyActivity.this, "Submission Successful", Toast.LENGTH_SHORT).show();
-                    SurveyActivity.this.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.survey_layout, new NotificationsFragment(), "noteFrag")
-                            .commit();
+                    Toast.makeText(SurveyActivity.this, mLocation.getText().toString(), Toast.LENGTH_SHORT).show();
+//                    SurveyActivity.this.getSupportFragmentManager().beginTransaction()
+////                            .replace(R.id.survey_layout, new NotificationsFragment(), "noteFrag")
+////                            .commit();
+                    startActivity(new Intent(SurveyActivity.this, MainActivity.class));
                 }
             }
         });

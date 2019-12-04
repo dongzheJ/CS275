@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.cs275.DatabaseHelper;
 import com.example.cs275.MainActivity;
 import com.example.cs275.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
