@@ -66,9 +66,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //TODO: To get "LaunchFragment" to display every launch, keep the below 3 lines uncommented:
         //TODO-----------------------VV-- CODE TO TEST FOR FIRST RUN --VV---------------------------
-//        SharedPreferences.Editor editor = prefs.edit();
-//        editor.clear();
-//        editor.commit();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
         //TODO-----------------------^^-- CODE TO TEST FOR FIRST RUN --^^---------------------------
         //Also note: Clearing app storage will also reset shared preferences and will execute as the first launch
         //Clearing app storage will also reset permissions, and the user will need to re enable location to prevent app crash
