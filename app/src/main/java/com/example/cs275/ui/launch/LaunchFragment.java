@@ -168,7 +168,7 @@ public class LaunchFragment extends Fragment {
             public void onClick(View view) {
 
                 String searchResultsTextViewString = "No Results, please try searching again!";
-                String searchResultsStatusTextViewString = "If you are searching for a City name, try adding the state/province to be more specific!";
+                String searchResultsStatusTextViewString = "If you are searching for a City name, try adding the state/province to be more specific!\n\nPlease ensure that you have an internet connection.";
                 //Retrieve strings inputted by user in EditText field:
                 String searchText = search.getText().toString();
                 try {
