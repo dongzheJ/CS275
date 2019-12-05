@@ -91,22 +91,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-//        //==========================================================================================
-//
-//        //Set up alarm manager to go off once every 24 hours at time determined below:
-//        Calendar updateTime = Calendar.getInstance();
-//        updateTime.setTimeZone(TimeZone.getTimeZone("EST"));
-//        updateTime.set(Calendar.HOUR_OF_DAY, 1);
-//        updateTime.set(Calendar.MINUTE, 0);
-//
-//        Intent intentForAlarm = new Intent(this, AlarmReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-//                0, intentForAlarm, PendingIntent.FLAG_CANCEL_CURRENT);
-//        AlarmManager alarms = (AlarmManager) this.getSystemService(
-//                Context.ALARM_SERVICE);
-//        alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-//                updateTime.getTimeInMillis(),
-//                AlarmManager.INTERVAL_DAY, pendingIntent);
+        DatabaseHelper db = new DatabaseHelper(this);
+//        db.insertData("DZJ", "dzj@uvm.edu", "surveyTime", "London", "51", "0");
+
+        //==========================================================================================
+
+        //Set up alarm manager to go off once every 24 hours at time determined below:
+        Calendar updateTime = Calendar.getInstance();
+        updateTime.setTimeZone(TimeZone.getTimeZone("EST"));
+        updateTime.set(Calendar.HOUR_OF_DAY, 1);
+        updateTime.set(Calendar.MINUTE, 0);
+
+        Intent intentForAlarm = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                0, intentForAlarm, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarms = (AlarmManager) this.getSystemService(
+                Context.ALARM_SERVICE);
+        alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                updateTime.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
 
         //==========================================================================================
         //If app is launched for the first time:
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             super.onCreate(savedInstanceState);
             //setupMainActivityNav();
-//            setContentView(R.layout.fragment_launch);
+            setContentView(R.layout.fragment_launch);
             LaunchFragment launchFragment = new LaunchFragment();
             if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
                 getSupportFragmentManager().beginTransaction()
