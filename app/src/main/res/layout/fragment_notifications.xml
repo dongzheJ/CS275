@@ -27,7 +27,7 @@
         android:gravity="center"
         android:text="@string/empty"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/sub_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,22 +38,22 @@
         android:id="@+id/survey_rv"
         android:layout_width="392dp"
         android:layout_height="378dp"
-        app:layout_constraintBottom_toTopOf="@+id/sub_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/no_subs"
         app:layout_constraintVertical_bias="0.125" />
 
-    <Button
-        android:id="@+id/sub_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/survey_submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_notifications"
-        app:layout_constraintVertical_bias="0.899" />
+<!--    <Button-->
+<!--        android:id="@+id/sub_btn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/survey_submit"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/text_notifications"-->
+<!--        app:layout_constraintVertical_bias="0.899" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@
     <string name="done">Done!</string>
     <string name="enter">Enter</string>
     <string name="HomeLocation">Please enter your home location</string>
-    <string name="survey_title">Welcome Home!</string>
+    <string name="survey_title">Survey Time!</string>
     <string name="survey_sub">Please fill out the survey below.</string>
     <string name="survey_travel">Location</string>
     <string name="survey_loc">Location</string>

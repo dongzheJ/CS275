@@ -37,9 +37,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--=========================================================================================-->
+    <!--NAME VIEW-->
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/nestedLinearLayout"
+    <LinearLayout
+        android:id="@+id/nestedLinearLayout1"
         android:layout_below="@+id/text_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -48,7 +49,21 @@
         <TextView
             android:id="@+id/text_disp_name_title"
             android:layout_width="0dp"
-            android:layout_weight=".15"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight=".17"
+            android:textColor="#FF000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_disp_name"
+            android:layout_width="0dp"
+            android:layout_weight=".83"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
@@ -58,8 +73,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+    </LinearLayout>
+
+    <!--=========================================================================================-->
+    <!--EMAIL VIEW-->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/nestedLinearLayout2"
+        android:layout_below="@+id/nestedLinearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <TextView
-            android:id="@+id/text_disp_name"
+            android:id="@+id/text_disp_email_title"
+            android:layout_width="0dp"
+            android:layout_weight=".15"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="#FF000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_disp_email"
             android:layout_width="0dp"
             android:layout_weight=".85"
             android:layout_height="wrap_content"
@@ -74,42 +115,56 @@
     </LinearLayout>
 
     <!--=========================================================================================-->
+    <!--LOCATION VIEW-->
 
-    <TextView
-        android:id="@+id/text_disp_email"
-        android:layout_width="match_parent"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/nestedLinearLayout3"
+        android:layout_below="@+id/nestedLinearLayout2"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nestedLinearLayout"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/text_disp_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_disp_email"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/text_disp_location_title"
+            android:layout_width="0dp"
+            android:layout_weight=".22"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="#FF000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_disp_location"
+            android:layout_width="0dp"
+            android:layout_weight=".78"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <!--=========================================================================================-->
+    <!--ABOUT VIEW-->
 
     <TextView
         android:id="@+id/text_disp_about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_disp_location"
+        android:layout_below="@+id/nestedLinearLayout3"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

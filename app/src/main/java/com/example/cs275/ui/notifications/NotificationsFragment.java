@@ -34,7 +34,7 @@ public class NotificationsFragment extends Fragment implements View.OnClickListe
     private SurveyDatabaseHelper dbh;
     private Cursor mCursor;
     private ArrayList<Submission> mSubmissions;
-    private Button btn;
+//    private Button btn;
 
     private TextView mEmpty;
     public RecyclerView rvSubmission;
@@ -58,13 +58,13 @@ public class NotificationsFragment extends Fragment implements View.OnClickListe
         adapter = new SubmissionAdapter(mSubmissions);
         rvSubmission.setAdapter(adapter);
 
-        btn = root.findViewById(R.id.sub_btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), SurveyActivity.class));
-            }
-        });
+//        btn = root.findViewById(R.id.sub_btn);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().startActivity(new Intent(getActivity(), SurveyActivity.class));
+//            }
+//        });
 
         populateRV();
 
@@ -98,7 +98,7 @@ public class NotificationsFragment extends Fragment implements View.OnClickListe
                 loadInValues();
             }
         } else{
-            mEmpty.setText("You haven't yet completed any surveys.  Start travleing!");
+            mEmpty.setText("You haven't yet completed any surveys yet.  To complete a survey, you must travel away from your home location.  Once TripTracker notices this, you will receive a notification to complete a survey.  Just tap that notification, and you will be brought to a survey.");
             return;
         }
 

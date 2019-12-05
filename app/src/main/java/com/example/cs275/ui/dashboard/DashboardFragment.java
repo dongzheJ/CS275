@@ -45,8 +45,10 @@ public class DashboardFragment extends Fragment {
         TextView nameTextView = (TextView) root.findViewById(R.id.text_disp_name);
 
         TextView emailTextView = (TextView) root.findViewById(R.id.text_disp_email);
+        TextView emailTitleTextView = (TextView) root.findViewById(R.id.text_disp_email_title);
 
         TextView locationTextView = (TextView) root.findViewById(R.id.text_disp_location);
+        TextView locationTitleTextView = (TextView) root.findViewById(R.id.text_disp_location_title);
 
         TextView aboutTextView = (TextView) root.findViewById(R.id.text_disp_about);
 
@@ -55,17 +57,19 @@ public class DashboardFragment extends Fragment {
         String textNameTitle = "Name: ";
         String textName = "No name in db";
 
-        String textEmail = "Email: ";
-
+        String textEmailTitle = "Email: ";
+        String textEmail = "No email in db";
 
         String textLocation = "Location: ";
+        String textLocationTitle = "Location: ";
 
-        String textAbout = "Welcome to the TripTracker application!\n" +
+        String textAbout = "\n\nAbout the TripTracker application:\n\n" +
                 "This application was developed with a primary purpose to record your home location " +
-                "and check a your location in the background, daily.  If TripTracker sees that you " +
+                "and check your location in the background, daily.  If TripTracker sees that you " +
                 "are not near your home location, you will receive a notification to complete a short " +
-                "and easy survey about your trip.\nThe surveys are for collecting information for a " +
-                "travel study being conducted by Dr.Lisa Aultman-Hall.\nTripTracker was created as a " +
+                "and easy survey about your trip.  Just tap the notification, and it will take you " +
+                "to a survey window.\n\nThe surveys are for collecting information for a " +
+                "travel study being conducted by Dr.Lisa Aultman-Hall.\n\nTripTracker was created as a " +
                 "project for CS275 by Max Peck, Vanessa White, Dongzhe Jiang, and Eric Boland at " +
                 "The Universiry of Vermont.";
 
@@ -73,16 +77,18 @@ public class DashboardFragment extends Fragment {
 
         if (cur.moveToFirst()) {
             textName = cur.getString(cur.getColumnIndex("NAME"));
-            textEmail = textEmail + cur.getString(cur.getColumnIndex("EMAIL"));
-            textLocation = textLocation + cur.getString(cur.getColumnIndex("HOMELOCALITY"));
+            textEmail = cur.getString(cur.getColumnIndex("EMAIL"));
+            textLocation = cur.getString(cur.getColumnIndex("HOMELOCALITY"));
         }
 
         //------------------------------------------------------------------------------------------
         nameTitleTextView.setText(textNameTitle);
         nameTextView.setText(textName);
 
+        emailTitleTextView.setText(textEmailTitle);
         emailTextView.setText(textEmail);
 
+        locationTitleTextView.setText(textLocationTitle);
         locationTextView.setText(textLocation);
 
         aboutTextView.setText(textAbout);

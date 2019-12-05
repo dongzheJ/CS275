@@ -169,7 +169,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng vermont = new LatLng(44, -73);
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(homeLatLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(homeLatLng));
 //        googleMap.addMarker(new MarkerOptions().position(libraryLoc).title("Library"));
         googleMap.addMarker(new MarkerOptions().position(homeLatLng).title("Home"));
 
