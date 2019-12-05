@@ -91,6 +91,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        DatabaseHelper db = new DatabaseHelper(this);
+//        db.insertData("DZJ", "dzj@uvm.edu", "surveyTime", "London", "51", "0");
+
         //==========================================================================================
 
         //Set up alarm manager to go off once every 24 hours at time determined below:
