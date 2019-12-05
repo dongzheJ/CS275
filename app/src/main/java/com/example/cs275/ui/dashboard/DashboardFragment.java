@@ -23,7 +23,7 @@ import com.example.cs275.R;
 
 public class DashboardFragment extends Fragment {
 
-//    private OnFragmentInteractionListener mListener;
+    //    private OnFragmentInteractionListener mListener;
     private com.example.cs275.ui.dashboard.DashboardViewModel dashboardViewModel;
 
     //==============================================================================================
@@ -39,15 +39,19 @@ public class DashboardFragment extends Fragment {
 
         TextView nameTextView = (TextView) root.findViewById(R.id.text_disp_name);
         TextView emailTextView = (TextView) root.findViewById(R.id.text_disp_email);
+        TextView locationTextView = (TextView) root.findViewById(R.id.text_disp_location);
 
         String textName = "Name: ";
         String textEmail = "Email: ";
+        String textLocation = "Location: ";
         if (cur.moveToFirst()) {
             textName = textName + cur.getString(cur.getColumnIndex("NAME"));
             textEmail = textEmail + cur.getString(cur.getColumnIndex("EMAIL"));
+            textLocation = textLocation + cur.getString(cur.getColumnIndex("HOMELOCALITY"));
         }
         nameTextView.setText(textName);
         emailTextView.setText(textEmail);
+        locationTextView.setText(textLocation);
 
 //        Button btn = (Button) root.findViewById(R.id.relaunchSetup);
 //        btn.setOnClickListener(new View.OnClickListener() {
