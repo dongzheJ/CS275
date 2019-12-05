@@ -1,6 +1,10 @@
 package com.example.cs275.ui.launch;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.location.Address;
@@ -19,13 +23,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.cs275.AlarmReceiver;
 import com.example.cs275.DatabaseHelper;
 import com.example.cs275.MainActivity;
 import com.example.cs275.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class LaunchFragment extends Fragment {
 
@@ -124,6 +131,25 @@ public class LaunchFragment extends Fragment {
 //                if (cur.moveToFirst()) {
 //                    System.out.println(cur.getString(cur.getColumnIndex("NAME")));
 //                }
+
+                    //------------------------------------------------------------------------------
+
+                    //Set up alarm manager to go off once every 24 hours at time determined below:
+                    Calendar updateTime = Calendar.getInstance();
+                    updateTime.setTimeZone(TimeZone.getTimeZone("EST"));
+                    updateTime.set(Calendar.HOUR_OF_DAY, 1);
+                    updateTime.set(Calendar.MINUTE, 0);
+
+                    Intent intentForAlarm = new Intent(getContext(), AlarmReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),
+                            0, intentForAlarm, PendingIntent.FLAG_CANCEL_CURRENT);
+                    AlarmManager alarms = (AlarmManager) getActivity().getSystemService(
+                            Context.ALARM_SERVICE);
+                    alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                            updateTime.getTimeInMillis(),
+                            AlarmManager.INTERVAL_DAY, pendingIntent);
+
+                    //------------------------------------------------------------------------------
 
                     //Change fragment to main view with navigation:
                     mListener.changeFragment(1);
