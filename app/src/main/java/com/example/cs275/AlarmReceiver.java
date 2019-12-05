@@ -9,6 +9,7 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.location.Location;
 import android.widget.Toast;
@@ -34,11 +35,22 @@ public class AlarmReceiver extends BroadcastReceiver {
     private FusedLocationProviderClient fusedLocationclient;
     private double mLat, mLon;
     private Context mContext;
+    private String home_lat;
+    private String home_lon;
+    private boolean inTravel;
     //==============================================================================================
 
     //Executes when alarm is triggered, even when app is open in background:
     @Override
     public void onReceive(final Context context, Intent arg1) {
+
+        // receive location data from database
+        DatabaseHelper db = new DatabaseHelper(context);
+        Cursor cur = db.getAllData();
+        if (cur.moveToFirst()) {
+            home_lat = cur.getString(cur.getColumnIndex("HOMELATITUDE"));
+            home_lon = cur.getString(cur.getColumnIndex("HOMELONGITUDE"));
+        }
 
         //TODO: Below code is for testing only: It just exists as a "flag" of sorts that shows up in the "Run" tab to indicate when this onReceive function executes:
         //TODO--------------------------------------------------------------------------------------
@@ -112,7 +124,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 //        }
 //
 ////        Toast.makeText(context, "I'm running", Toast.LENGTH_SHORT).show();
-
     }
 
     //==============================================================================================
@@ -121,11 +132,20 @@ public class AlarmReceiver extends BroadcastReceiver {
     private boolean checkLocationChange() {
         //TODO: Insert location logic below to check user location:
         //TODO--------------------------------------------------------------------------------------
-
-        return true;
+        System.out.println(home_lat);
+        System.out.println(home_lon);
+        if(Double.parseDouble(home_lat) > mLat+5 || Double.parseDouble(home_lat) < mLat-5){
+            inTravel = true;
+            return true;
+        }else if(Double.parseDouble(home_lon) > mLon+5 || Double.parseDouble(home_lon) < mLon-5){
+            return true;
+        }else{
+         return false;
+        }
 
         //TODO--------------------------------------------------------------------------------------
     }
+
 
     private void setUpAlarm(Context context){
         if (checkLocationChange()) {
@@ -152,7 +172,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.map)
                     .setContentTitle("TripTracker can see that you are traveling!")
-                    .setContentText(Double.toString(mLat) + ", " + Double.toString(mLon));
+                    .setContentText("Take a survey!");
+//                    .setContentText(Double.toString(mLat) + ", " + Double.toString(mLon));
 
             Intent resultIntent = new Intent(context, SurveyActivity.class);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
