@@ -98,7 +98,7 @@ public class NotificationsFragment extends Fragment implements View.OnClickListe
                 loadInValues();
             }
         } else{
-            mEmpty.setText("Your Surveys");
+            mEmpty.setText("You haven't yet completed any surveys.  Start travleing!");
             return;
         }
 
