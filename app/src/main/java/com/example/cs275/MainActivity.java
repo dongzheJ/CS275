@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             super.onCreate(savedInstanceState);
             //setupMainActivityNav();
-            setContentView(R.layout.fragment_launch);
+//            setContentView(R.layout.fragment_launch);
             LaunchFragment launchFragment = new LaunchFragment();
             if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null) {
                 getSupportFragmentManager().beginTransaction()
